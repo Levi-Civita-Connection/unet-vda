@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+service MesoDealiaser {
+    rpc DealiasRadarFrame(RadarFrame) returns (RadarFrame);
+}
+
+message Level3ExtData {
+  int32 DataMask = 1;
+  int32 DataScale = 2;
+  int32 DataOffset = 3;
+  int32 ToppedMask = 4;
+}
+
+message RadarFrame {
+  string ID = 1;
+  string ICAO = 2;
+  string ProductName = 3;
+  google.protobuf.Timestamp Date = 4;
+  int32 VCP = 5;
+  int32 TiltNumber = 6;
+  float ElevationAngle = 7;
+  float Latitude = 8;
+  float Longitude = 9;
+  float StartAzimuthAngle = 10;
+  int32 GateCount = 11;
+  int32 RadialCount = 12;
+  float UpperCutoff = 13;
+  float LowerCutoff = 14;
+  repeated float Gates = 15;
+  int32 ProductCode = 16;
+  float ConeOfSilenceRadius = 17;
+  Level3ExtData Level3ExtData = 18;
+  float NyquistVelocity = 19;
+}

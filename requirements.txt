@@ -1,0 +1,8 @@
+grpcio
+grpcio-tools
+tensorflow
+tf-keras
+numpy
+matplotlib
+lz4
+protobuf

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meso-dealiaser-deployment
+  namespace: default
+  labels:
+    app: meso-dealiaser
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: meso-dealiaser
+  template:
+    metadata:
+      labels:
+        app: meso-dealiaser
+    spec:
+      containers:
+      - name: meso-dealiaser-server
+        image: docker.io/bsmithai/unet-vda-mesocast:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 50051
+          name: grpc
+        # env:
+        # - name: CUDA_VISIBLE_DEVICES
+        #   value: "-1"
+        # - name: TF_USE_LEGACY_KERAS
+        #   value: "True"
+        # --- IMPORTANT: Resource Limits ---
+        # Adjust these based on your application's actual needs!
+        # TensorFlow can be memory and CPU intensive. Monitor usage.
+        resources:
+          requests:
+            cpu: "1"
+            memory: "2Gi"
+          limits:
+            cpu: "2"
+            memory: "4Gi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: meso-dealiaser-service
+  namespace: default
+  labels:
+    app: meso-dealiaser
+spec:
+  selector:
+    app: meso-dealiaser
+  ports:
+  - protocol: TCP
+    port: 50051
+    targetPort: grpc
+  type: ClusterIP
